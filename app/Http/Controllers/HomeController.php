@@ -47,6 +47,6 @@ class HomeController extends Controller
     }
 
     public function contact(){
-        return view('pages.contactUs.index');
+        return view('pages.ContactUs.index');
     }
 }
