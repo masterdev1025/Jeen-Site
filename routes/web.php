@@ -20,3 +20,7 @@ Route::get('/contact', 'HomeController@contact');
 
 Route::get('/products', 'ProductController@index');
 Route::get('/products/{category}',  'ProductController@indexByCategory');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
