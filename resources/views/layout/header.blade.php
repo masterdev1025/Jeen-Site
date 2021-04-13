@@ -61,27 +61,27 @@
                                                     </a>
                                                 </li>
                                                 <li class="dropdown dropdown-full-color dropdown-light">
-                                                    <a class="dropdown-item {{ Request::is('/about') ? 'active' : '' }}" href="/about">
+                                                    <a class="dropdown-item {{ Request::segment(1) == 'about' ? 'active' : '' }}" href="/about">
                                                         About Us
                                                     </a>
                                                 </li>
                                                 <li class="dropdown dropdown-full-color dropdown-light">
-                                                    <a class="dropdown-item {{ Request::is('/products') ? 'active' : '' }}" href="/products">
+                                                    <a class="dropdown-item {{ Request::segment(1) == 'products' ? 'active' : '' }}" href="/products">
                                                         Products
                                                     </a>
                                                 </li>
                                                 <li class="dropdown dropdown-full-color dropdown-light">
-                                                    <a class="dropdown-item {{ Request::is('/formulary') ? 'active' : '' }}" href="/formulary">
+                                                    <a class="dropdown-item {{ Request::segment(1) == 'formulary' ? 'active' : '' }}" href="/formulary">
                                                         Formulary
                                                     </a>
                                                 </li>
                                                 <li class="dropdown dropdown-full-color dropdown-light">
-                                                    <a class="dropdown-item {{ Request::is('/brochures') ? 'active' : '' }}" href="/brochures">
+                                                    <a class="dropdown-item {{ Request::segment(1) == 'brochures' ? 'active' : '' }}" href="/brochures">
                                                         Brochures
                                                     </a>
                                                 </li>
                                                 <li class="dropdown dropdown-full-color dropdown-light">
-                                                    <a class="dropdown-item {{ Request::is('/contact') ? 'active' : '' }}" href="/contact">
+                                                    <a class="dropdown-item {{Request::segment(1) == 'contact' ? 'active' : '' }}" href="/contact">
                                                         Contact Us
                                                     </a>
                                                 </li>

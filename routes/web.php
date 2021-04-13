@@ -19,3 +19,4 @@ Route::get('/brochures', 'HomeController@brochures');
 Route::get('/contact', 'HomeController@contact');
 
 Route::get('/products', 'ProductController@index');
+Route::get('/products/{category}',  'ProductController@indexByCategory');

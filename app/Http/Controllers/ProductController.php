@@ -13,11 +13,30 @@ class ProductController extends Controller
         if( $data && $data->products )
         {
             if( $category !== 'all' ){
-
+                foreach($data->products as $key => $prod)
+                {
+                    if( strpos($prod->productCategory, $category) === false )
+                    {
+                        unset( $data->products[$key] );
+                    }
+                }
             }
         }
+        return $data;
     }
     public function index(){
-        return view('pages.Products.main.index');
+        $data  = $this->getProductData();
+        return view('pages.Products.main.index',[
+            'data' => $data,
+            'category' => null
+        ]);
+    }
+
+    public function indexByCategory($category, Request $request){
+        $data  = $this->getProductData($category);
+        return view('pages.Products.main.index',[
+            'data' => $data,
+            'category' => $category
+        ]);
     }
 }

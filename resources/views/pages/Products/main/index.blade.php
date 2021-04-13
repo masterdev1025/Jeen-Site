@@ -3,22 +3,31 @@
 @section('page-title')
     Products
 @endsection
+@section('page-css')
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.24/r-2.2.7/rg-1.1.2/sp-1.2.2/datatables.min.css"/>
+@endsection
 @section('page-content')
 <div role="main" class="main">
-    <section class="page-header page-header-modern page-header-lg overlay overlay-show overlay-op-9 m-0" style="background-image: url(img/breadcrumbs2.jpg); background-size: cover; background-position: center;">
+    <section class="page-header page-header-modern page-header-lg overlay overlay-show overlay-op-9 m-0" style="background-image: url(/assets/img/breadcrumbs2.jpg); background-size: cover; background-position: center;">
         <div class="container py-4">
             <div class="row">
                 <div class="col text-center">
                     <ul class="breadcrumb d-flex justify-content-center text-4-5 font-weight-medium mb-2">
                         <li><a href="/" class="text-color-primary text-decoration-none">HOME </a></li>
-                        <li class="text-color-primary active">Products</li>
+                        <li class="text-color-primary active">Products
+
+                        </li>
                     </ul>
-                    <h1 class="text-color-light font-weight-bold text-10">Products</h1>
+                    <h1 class="text-color-light font-weight-bold text-10">Products
+                    @if($category)
+                        / {{ $category }}
+                    @endif</h1>
                 </div>
             </div>
         </div>
     </section>
     <section class="section section-default section-no-border mt-0 pt-0" id="prodData">
+        @if(!$category)
         <div class="container pt-5 pb-4 jplist-panel">
             <div class="input-group btn-group">
                 <button id="showAll" style="display:none;" type="button" data-jplist-control="buttons-text-filter" data-path="default" data-group="data-group-1" data-mode="radio" data-text="" class="form-control" data-name="buttons-text-filter">
@@ -87,10 +96,39 @@
                     Vitamins
                 </button>
             </div>
-
         </div>
+        @endif
         <div class="container pt-3 pb-4">
             <table id="prodTable" class="table  table-bordered dt-responsive " style="width:100%">
+                <thead>
+                    <tr class='bg-primary prodTitles'>
+                        <th class='pName'>Product Trade Name</th>
+                        <th >INCI</th>
+                        <th >Attributes</th>
+                        <th ></th>
+                    </tr>
+                </thead>
+                <tbody>
+                @if($data && $data->products)
+                    @foreach($data->products as $item)
+                    <tr class='prodRow '>
+                        <td class='pt-1 pb-1 prodName1'>{{$item->productName}}
+                            <table class='mbTable d-block d-sm-none'>
+                                <tr>
+                                    <td class='prodInci mbInci pl-0 pt-1'>
+                                        <strong>INCI</strong><br>{{$item->inci}}
+                                    </td>
+                                    <td><div class='btn btn-sm btn-prod pt-0'>Request Information</div></td>
+                                </tr>
+                            </table>
+                        </td>
+                        <td class='prodInci pb-1 pt-2'>{{$item->inci}}</td>
+                        <td class='pt-1 pb-1' data-search=''>{{$item->productState}}</td>
+                        <td class='pt-1 pb-1' data-search='{{$item->productCategory}} sds msds'><div class='btn btn-sm btn-prod pt-0' data-prod="{{$item->productName}}">Request Information</div></td>
+                    </tr>
+                    @endforeach
+                @endif
+                </tbody>
             </table>
         </div>
     </section>
@@ -102,4 +140,183 @@
     <div id="lg" class="d-none d-lg-block d-xl-none"></div>
     <div id="xl" class="d-none d-xl-block"></div>
 </div>
+@endsection
+
+
+@section('page-js')
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.24/r-2.2.7/rg-1.1.2/sp-1.2.2/datatables.min.js"></script>'
+<script src="https://www.google.com/recaptcha/api.js?render=explicit"></script>
+<script>
+    $(document).ready(function(){
+        var table = $('#prodTable').DataTable({
+            ordering: false,
+            paging: false,
+            responsive: {
+                details: false
+            },
+            columnDefs: [
+                {
+                    width: '40%', targets: 0
+                },
+                {
+                    width: '17%', targets: 2
+                },
+                {
+                    width: '16%', targets: 3
+                },
+            ]
+        });
+        $('#prodTable_filter label input[type=search]').on('keyup', function() {
+            console.log($('#prodTable_filter label input[type=search]').val());
+            var numItems = $('.jplist-selected').length;
+            console.log('num: '+numItems);
+            if(numItems > 0){
+                $(".btn-cat").removeClass("jplist-selected");
+                table.search('').columns().search('').draw();
+                $('#prodTable_filter label input[type=search]').keyup();
+            }
+
+        });
+        $(document).on('click', '.btn-cat', function () {
+            table.search('').columns().search('').draw();
+            $('#prodTable_filter label input[type=search]').val('');
+            var ss = $(this).attr("data-text");
+            var searchCol = 3;
+            console.log($(this).attr("data-sType"));
+            if($(this).attr("data-sType") == 'jee'){
+                console.log('search col1');
+                searchCol = 0;
+            } else {
+                searchCol = 3;
+            }
+            //$('input[aria-controls="prodTable"]').val(ss);
+            //$('div#prodTable_filter input').val(ss);
+            table
+                .columns( searchCol )
+                .search(  ss )
+                .draw();
+            $(".btn-cat").removeClass("jplist-selected");
+            $(this).addClass("jplist-selected");
+
+        });
+        $(document).on('click', '.btn-prod', function () {
+            var uIp = "{{ Request::getClientIp() }}";
+            var uLink = "{{ url()->full() }}";
+            //calendar.refetchEvents();
+            var pid = $(this).attr("data-prodid");
+            var prodName = $(this).attr("data-prod");
+            Swal.fire({
+                title: prodName,
+                text: "The data will input",
+                html:'<div class="swText mb-4"> To get more information about this product or access product documents, ' +
+                    'please fill out the form below. </div>'+
+                    '<form id="swForm">'+
+                    '<label class="swLabel" for="swName">Name (Required)</label>'+
+                    '<input id="swName" name="swName" class="swal2-input mt-0" required>' +
+                    '<label class="swLabel" for="swCompany">Company (Required)</label>'+
+                    '<input id="swCompany" name="swCompany"  class="swal2-input mt-0" required>' +
+                    '<label class="swLabel" for="swEmail">Email (Required)</label>'+
+                    '<input id="swEmail" name="swEmail" class="swal2-input mt-0" required>' +
+                    '<label class="swLabel">Phone (Required)</label>'+
+                    '<input id="swPhone" name="swPhone" value="" class="swal2-input mt-0">' +
+                    '<label class="swLabel">Message (Required)</label>'+
+                    '<textarea aria-label="Type your message here" class="swal2-textarea mt-0" placeholder="Type your message here..." id="swMsg" name="swMsg" style="display: flex;"></textarea>' +
+                    '<div id="g2"></div>' +
+                    '<input id="swProduct" value="'+prodName+ '" class="swal2-input" style="display: none">' +
+                    '</form>',
+                showCancelButton: false,
+                showConfirmButton: true,
+                showCloseButton: true,
+
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Submit',
+                cancelButtonText: 'Cancel',
+                onOpen: function () {
+                    grecaptcha.render('g2', {
+                        'sitekey': '6LeGWp8aAAAAAK8jJ7DR10YKzQe2F2yFk5buDbxs'
+                    })
+                },
+                preConfirm: () => {
+                    var form = $( "#swForm" );
+                    form.validate({
+                        rules: {
+                            swName: {
+                                required: true,
+                            },
+                            swCompany: {
+                                required: true,
+                            },
+                            swEmail: {
+                                required: true,
+                                email: true
+                            },
+                            swPhone: {
+                                required: true,
+                            },
+                            swMsg: {
+                                required: true,
+                            },
+                        },
+                        errorPlacement: function(error, element) {
+                            // Append error within linked label
+                            $( element )
+                                .closest( "form" )
+                                .find( "label[for='" + element.attr( "id" ) + "']" )
+                                .append( error );
+                        },
+                        errorElement: "span",
+                    });
+                    //alert( "Valid: " + form.valid() );
+                    var subReady = 0;
+                    if (form.valid() === false) {
+                        Swal.showValidationMessage(`Please fill in missing fields.`)
+                    } else if (grecaptcha.getResponse().length === 0) {
+                        Swal.showValidationMessage(`Please verify that you're not a robot`)
+                    } else {
+                        subReady =1;
+                        $.ajax({
+                            url: 'php/productRequest.php',
+                            type: "post",
+                            data: {
+                                swProduct: $( "#swProduct" ).val(),
+                                swName: $( "#swName" ).val(),
+                                swCompany: $( "#swCompany" ).val(),
+                                swPhone: $( "#swPhone" ).val(),
+                                swEmail: $( "#swEmail" ).val(),
+                                swMsg: $( "#swMsg" ).val(),
+                                swIp: uIp,
+                                swLink: uLink,
+                                'g-recaptcha-response':grecaptcha.getResponse()
+                            },
+                            dataType: 'text',
+                            cache: false,
+                            success: function (result) {
+                                if (result == 'success') {
+                                    alert('Form submitted successfully.');
+                                } else {
+                                    alert(result);
+                                }
+                            }
+                        });
+                    }
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.showValidationError(
+                        '.'
+                    );
+                    //alert('testConfirm');
+                } else if (
+                    /* Read more about handling dismissals below */
+                    result.isDismissed
+                ) {
+                    //alert('cancelled submit');
+                }
+            })
+        });
+    })
+
+</script>
 @endsection

@@ -53,6 +53,8 @@
         <!-- Theme Custom CSS -->
         <link rel="stylesheet" href="{{ asset('/css/custom.css') }}">
 
+        @yield('page-css')
+
         <!-- Head Libs -->
         <script src="{{ asset('/vendor/modernizr/modernizr.min.js') }}"></script>
 
