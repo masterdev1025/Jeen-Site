@@ -11,16 +11,15 @@
 |
 */
 
-
-Route::get('/', 'HomeController@index');
-Route::get('/about', 'HomeController@aboutUs');
-Route::get('/formulary', 'HomeController@formulary');
-Route::get('/brochures', 'HomeController@brochures');
-Route::get('/contact', 'HomeController@contact');
+Auth::routes();
+Route::get('/', 'HomeMainController@index');
+Route::get('/about', 'HomeMainController@aboutUs');
+Route::get('/formulary', 'HomeMainController@formulary');
+Route::get('/brochures', 'HomeMainController@brochures');
+Route::get('/contact', 'HomeMainController@contact');
 
 Route::get('/products', 'ProductController@index');
 Route::get('/products/{category}',  'ProductController@indexByCategory');
 
-Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+
