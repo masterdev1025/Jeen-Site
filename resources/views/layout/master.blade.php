@@ -11,7 +11,7 @@
         <meta name="author" content="BotanicalsPlus Inc">
 
         <!-- Favicon -->
-        <link rel="shortcut icon" href="{{ asset('assets/img/bpIcon.ico') }}" type="image/x-icon" />
+        <link rel="shortcut icon" href="{{ asset('assets/img/jeenIcon.ico') }}" type="image/x-icon" />
         <link rel="apple-touch-icon" href="{{  asset('assets/img/apple-touch-icon.png') }} ">
 
         <!-- Mobile Metas -->

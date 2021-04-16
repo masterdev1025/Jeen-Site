@@ -30,6 +30,7 @@ class User extends Authenticatable
         'userPostal',
         'userCountry',
         'registerDate',
+        'registerCurrentCustomer',
         'approvalDate',
         'userStatus',
         'notes'

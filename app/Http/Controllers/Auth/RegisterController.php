@@ -49,7 +49,6 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
@@ -64,8 +63,22 @@ class RegisterController extends Controller
     protected function create(array $data)
     {
         return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
+            'name' => !empty($data['name']) ? $data['name'] : '',
+            'email' => !empty($data['email']) ? $data['email'] : '',
+            'userFirst' => !empty( $data['userFirst'] ) ? $data['userFirst'] : '',
+            'userLast' => !empty( $data['userLast'] ) ? $data['userLast'] : '',
+            'userPhone' => !empty( $data['userPhone'] ) ? $data['userPhone'] : '',
+            'userPosition' => !empty( $data['userPosition'] ) ? $data['userPosition'] : '',
+            'userAddress1' => !empty( $data['userAddress1'] ) ? $data['userAddress1'] : '',
+            'userAddress2' => !empty( $data['userAddress2'] ) ? $data['userAddress2'] : '',
+            'userCity' => !empty( $data['userCity'] ) ? $data['userCity'] : '',
+            'userState'  => !empty( $data['userState'] ) ? $data['userState'] : '',
+            'userPostal' => !empty( $data['userPostal'] ) ? $data['userPostal'] : '',
+            'userCountry'  => !empty( $data['userCountry'] ) ? $data['userCountry'] : '',
+            'registerDate' => date('Y-m-d H:i:s'),
+            'approvalDate' => '',
+            'userStatus'   => 0,
+            'notes' => !empty( $data['notes'] ) ? $data['notes'] : '',
             'password' => Hash::make($data['password']),
         ]);
     }

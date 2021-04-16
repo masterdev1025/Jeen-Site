@@ -3,7 +3,7 @@
 @section('page-content')
 
 <div role="main" class="main">
-    <section class="page-header page-header-modern page-header-lg overlay overlay-show overlay-op-9 m-0" style="background-image: url(img/breadcrumbs2.jpg); background-size: cover; background-position: center;">
+    <section class="page-header page-header-modern page-header-lg overlay overlay-show overlay-op-9 m-0" style="background-image: url(/assets/img/breadcrumbs2.jpg); background-size: cover; background-position: center;">
         <div class="container py-4">
             <div class="row">
                 <div class="col text-center">
@@ -47,7 +47,13 @@
                         <strong style = "color:red;">{{ $errors->first() }}</strong>
                     </span>
                     @endif
+
                     <div id="rc3login"></div>
+                    <div class="form-row justify-content-center">
+                        <div class="form-group col text-center">
+                            <span class="">Don't have a login?</span><a href = "/register" class="text-color-primary ml-2 font-weight-bold" style="cursor: pointer;"><u>Register</u></a>
+                        </div>
+                    </div>
                     <div class="kt-login__actions">
                         <button id="kt_login_signin_submit" class="btn btn-primary btn-elevate kt-login__btn-primary">Login Now</button>
                     </div>
