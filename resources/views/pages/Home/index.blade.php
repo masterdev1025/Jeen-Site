@@ -5,7 +5,7 @@
 @endsection
 
 @section('page-content')
-<div role="main" class="main">
+<div>
     <section class="section-default section-no-border mt-0 pt-0" >
         <img src="{{ asset('assets/img/jeen25year.gif') }}" class="img-fluid">
     </section>

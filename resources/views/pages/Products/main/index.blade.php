@@ -7,7 +7,7 @@
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.24/r-2.2.7/rg-1.1.2/sp-1.2.2/datatables.min.css"/>
 @endsection
 @section('page-content')
-<div role="main" class="main">
+<div>
     <section class="page-header page-header-modern page-header-lg overlay overlay-show overlay-op-9 m-0" style="background-image: url(/assets/img/breadcrumbs2.jpg); background-size: cover; background-position: center;">
         <div class="container py-4">
             <div class="row">

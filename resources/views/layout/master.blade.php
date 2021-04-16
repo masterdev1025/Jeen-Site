@@ -57,13 +57,57 @@
 
         <!-- Head Libs -->
         <script src="{{ asset('/vendor/modernizr/modernizr.min.js') }}"></script>
-
+        <style>
+            .subNav {
+                padding: 8px 35px !important;
+                white-space: nowrap;
+            }
+        </style>
     </head>
     <body>
 
         <div class="body">
             @include('layout.header')
+            <div role="main" class="main">
+            @if(Auth::check())
+            <nav class="navbar navbar-expand-md navbar-dark p-0 " style="
+            background-color: darkgray;
+            ">
+            <div class="d-flex w-50 order-0">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsingNavbar">
+                <span class="navbar-toggler-icon"></span>
+                </button>
+            </div>
+            <div class="navbar-collapse collapse justify-content-center order-2" id="collapsingNavbar">
+                <ul class="navbar-nav subNavUl">
+                    <li class="nav-item">
+                        <a class="nav-link subNav" href="#">Orders</a>
+                    </li>
+                    <li class="nav-item active" style="
+                        ">
+                        <a class="nav-link nav-link subNav" href="#" style="">Saved Products<span class="sr-only">Saved Products</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link subNav" href="//codeply.com">Product Documents</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link subNav" href="#">Request Quote</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link subNav" href="#">Quote Cart
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link subNav" href="#">My Account
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <span class="navbar-text small text-truncate mt-1 w-50 text-right order-1 order-md-last"></span>
+            </nav>
+            @endif
             @yield('page-content')
+            </div>
             @include('layout.footer')
         </div>
         <script src="{{ asset('/vendor/jquery/jquery.min.js') }}"></script>

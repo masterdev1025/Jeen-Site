@@ -92,15 +92,39 @@
                             </div>
                             <div class="header-column ">
                                 <div class="header-row justify-content-end">
+                                    <div class="header-nav header-nav-stripe header-nav-divisor header-nav-force-light-text justify-content-end" data-sticky-header-style="{'minResolution': 991}" data-sticky-header-style-active="{'margin-left': '230px'}" data-sticky-header-style-deactive="{'margin-left': '0'}" style="margin-left: 0px;">
+                                        <div class="header-nav-main header-nav-main-square header-nav-main-effect-1 header-nav-main-sub-effect-1">
+                                            <nav class="collapse show" style="">
+                                            <ul class="nav nav-pills" id="mainNav">
+                                                <li class="dropdown dropdown-full-color dropdown-light dropdown-reverse">
+                                                    @if(!Auth::check())
+                                                    <a class="dropdown-item " href="/login">Login
+                                                    </a>
+                                                    @else
+                                                    <a class="dropdown-item" href="{{ route('logout') }}"
+                                                    onclick="event.preventDefault();
+                                                                    document.getElementById('logout-form').submit();">
+                                                        Logout
+                                                    </a>
+
+                                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                                        @csrf
+                                                    </form>
+                                                    @endif
+                                                </li>
+                                            </ul>
+                                            </nav>
+                                        </div>
+                                    </div>
                                     <div class="header-nav-features header-nav-features-no-border w-75">
                                         <form role="search" class=" w-100 d-none d-sm-flex" method="get" action="/products">
                                             <div class="simple-search input-group w-100">
-                                                <input class="form-control border-0 border-radius-0 text-2" id="headerSearch" name="s" type="search" value="" placeholder="Search..." autocomplete="off">
-                                                <span class="input-group-append bg-light border-0 border-radius-0">
-                                                            <button class="btn" type="submit">
-                                                                <i class="fa fa-search header-nav-top-icon"></i>
-                                                            </button>
-                                                        </span>
+                                            <input class="form-control border-0 border-radius-0 text-2" id="headerSearch" name="s" type="search" value="" placeholder="Search..." autocomplete="off">
+                                            <span class="input-group-append bg-light border-0 border-radius-0">
+                                            <button class="btn" type="submit">
+                                            <i class="fa fa-search header-nav-top-icon"></i>
+                                            </button>
+                                            </span>
                                             </div>
                                         </form>
                                     </div>
@@ -114,5 +138,7 @@
                 </div>
             </div>
         </div>
+
     </div>
 </header>
+

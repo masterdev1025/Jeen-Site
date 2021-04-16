@@ -5,7 +5,7 @@
 @endsection
 
 @section('page-content')
-<div role="main" class="main">
+<div>
     <section class="page-header page-header-modern page-header-lg overlay overlay-show overlay-op-5 m-0 " style="background-image: url(/assets/img/breadcrumbs2.jpg); background-size: cover; background-position: center;">
         <div class="container py-4">
             <div class="row">
