@@ -19,8 +19,8 @@
                         </li>
                     </ul>
                     <h1 class="text-color-light font-weight-bold text-10">Products
-                    @if($category)
-                        / {{ $category }}
+                    @if($data && $data['category'])
+                        / {!! $data['category']->html_data !!}
                     @endif</h1>
                 </div>
             </div>
@@ -109,22 +109,22 @@
                     </tr>
                 </thead>
                 <tbody>
-                @if($data && $data->products)
-                    @foreach($data->products as $item)
+                @if($data && $data['products'])
+                    @foreach($data['products'] as $item)
                     <tr class='prodRow '>
-                        <td class='pt-1 pb-1 prodName1'>{{$item->productName}}
+                        <td class='pt-1 pb-1 prodName1'>{{$item->product_name}}
                             <table class='mbTable d-block d-sm-none'>
                                 <tr>
                                     <td class='prodInci mbInci pl-0 pt-1'>
-                                        <strong>INCI</strong><br>{{$item->inci}}
+                                        <strong>INCI</strong><br>{{$item->product_inci}}
                                     </td>
                                     <td><div class='btn btn-sm btn-prod pt-0'>Request Information</div></td>
                                 </tr>
                             </table>
                         </td>
-                        <td class='prodInci pb-1 pt-2'>{{$item->inci}}</td>
-                        <td class='pt-1 pb-1' data-search=''>{{$item->productState}}</td>
-                        <td class='pt-1 pb-1' data-search='{{$item->productCategory}} sds msds'><div class='btn btn-sm btn-prod pt-0' data-prod="{{$item->productName}}">Request Information</div></td>
+                        <td class='prodInci pb-1 pt-2'>{{$item->product_inci}}</td>
+                        <td class='pt-1 pb-1' data-search=''>{{$item->product_state}}</td>
+                        <td class='pt-1 pb-1' data-search='{{$item->product_categories}} sds msds'><div class='btn btn-sm btn-prod pt-0' data-prod="{{$item->product_name}}">Request Information</div></td>
                     </tr>
                     @endforeach
                 @endif

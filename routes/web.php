@@ -20,6 +20,7 @@ Route::get('/contact', 'HomeMainController@contact');
 
 Route::get('/products', 'ProductController@index');
 Route::get('/products/{category}',  'ProductController@indexByCategory');
+Route::get('/products/{category}/{alias}',  'ProductController@indexByCategoryAlias');
 
 
 
