@@ -11,18 +11,26 @@ class ProductController extends Controller
     //
     private function getProductData($category = 'all'){
         $prodCategory = null;
-        $prodData = WebsiteProduct::where([['active','=',1],['companyId','=',1]]);
-        $prodDataQuery = 'SELECT *
-                          FROM `website_products`
-                          WHERE `active` = 1
-                          AND `companyId` = 1
+        $prodDataQuery = 'SELECT `wp`.`product_name` AS `productName`,
+                                 `wp`.`product_inci` AS `productInci`,
+                                 `wp`.`product_type` AS `productType`,
+                                 `wp`.`product_state` AS `productState`,
+                                 `wp`.`image_url` AS `img`,
+                                 `wp`.`url_alias` AS `urlAlias`,
+                                 `wp`.`primary_category_id` AS `categoryId`,
+                                 `wc`.`category_url_alias` AS `categoryAlias`
+                         FROM `website_products` `wp`
+                         LEFT OUTER JOIN `website_products_categories` `wc`
+                         ON `wc`.id = `wp`.`primary_category_id`
+                         WHERE `wp`.`active` = 1
+                         AND `wp`.`companyId` = 1
                           ';
         if( $category !== 'all' )
         {
             $prodCategory = WebsiteProductCategory::where([['active','=',1],['category_url_alias','=',$category]])->first();
             if( $prodCategory )
             {
-                $prodDataQuery = $prodDataQuery . 'AND ' . $prodCategory->sql_param;
+                $prodDataQuery = $prodDataQuery . 'AND `wp`.' . $prodCategory->sql_param;
                 $data = DB::select( $prodDataQuery );
             } else {
                 $data = array();
@@ -57,7 +65,7 @@ class ProductController extends Controller
         {
             foreach($data['products'] as $d)
             {
-                if( $d->url_alias == $alias )
+                if( $d->urlAlias == $alias )
                 {
                     $product = $d;
                     break;

@@ -112,19 +112,23 @@
                 @if($data && $data['products'])
                     @foreach($data['products'] as $item)
                     <tr class='prodRow '>
-                        <td class='pt-1 pb-1 prodName1'>{{$item->product_name}}
+                        <td class='pt-1 pb-1 prodName1'>{{$item->productName}}
                             <table class='mbTable d-block d-sm-none'>
                                 <tr>
                                     <td class='prodInci mbInci pl-0 pt-1'>
-                                        <strong>INCI</strong><br>{{$item->product_inci}}
+                                        <strong>INCI</strong><br>{{$item->productInci}}
                                     </td>
                                     <td><div class='btn btn-sm btn-prod pt-0'>Request Information</div></td>
                                 </tr>
                             </table>
                         </td>
-                        <td class='prodInci pb-1 pt-2'>{{$item->product_inci}}</td>
-                        <td class='pt-1 pb-1' data-search=''>{{$item->product_state}}</td>
-                        <td class='pt-1 pb-1' data-search='{{$item->product_categories}} sds msds'><div class='btn btn-sm btn-prod pt-0' data-prod="{{$item->product_name}}">Request Information</div></td>
+                        <td class='prodInci pb-1 pt-2'>{{$item->productInci}}</td>
+                        <td class='pt-1 pb-1' data-search=''>{{$item->productState}}</td>
+                        <td class='pt-1 pb-1' data-search='{{$item->productType}} sds msds'>
+                            @if($item->categoryAlias)
+                            <a class = "btn btn-outline-success btn-sm" href = "/products/{{ $item->categoryAlias }}/{{ $item->urlAlias }}">View Product</a>
+                            @endif
+                        </td>
                     </tr>
                     @endforeach
                 @endif

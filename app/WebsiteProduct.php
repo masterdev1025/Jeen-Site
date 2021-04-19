@@ -23,7 +23,11 @@ class WebsiteProduct extends Model
         'chemical_families',
         'image_url',
         'product_status',
+        'primary_category_id',
         'active',
         'private'
     ];
+    public function primaryCategory(){
+        return $this->belongsTo('App\WebsiteProductCategory'. 'primary_category_id');
+    }
 }
