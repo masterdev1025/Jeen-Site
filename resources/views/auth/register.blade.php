@@ -207,6 +207,7 @@
 <script>
     $(document).ready(function(){
         populateCountries("userCountry", "userState");
+        $("#userCountry").val("USA").change();
     })
     $(document).on('keyup','.name-input', function(e){
         var userFirst = $('input[name="userFirst"]').val();

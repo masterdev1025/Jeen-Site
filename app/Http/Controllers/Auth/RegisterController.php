@@ -7,7 +7,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
-
+use Illuminate\Http\Request;
+use Illuminate\Auth\Events\Registered;
 class RegisterController extends Controller
 {
     /*
@@ -60,8 +61,43 @@ class RegisterController extends Controller
      * @param  array  $data
      * @return \App\User
      */
+    public function register(Request $request)
+    {
+        $this->validator($request->all())->validate();
+        $curl = curl_init();
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => "https://jeeninv.com/website/userdata",
+            CURLOPT_RETURNTRANSFER => true,
+            CURLINFO_HEADER_OUT => true,
+            CURLOPT_POST => true,
+            CURLOPT_POSTFIELDS => json_encode([
+                'name' => $request->name ? $request->name : '',
+                'email' => $request->email ? $request->email : '',
+                'userFirst' => $request->userFirst ? $request->userFirst : '',
+                'userLast' => $request->userLast ? $request->userLast : '',
+                'userPhone' => $request->userPhone ? $request->userPhone : '',
+                'userPosition' => $request->userPosition ? $request->userPosition : '',
+                'userAddress1' => $request->userAddress1 ? $request->userAddress1 : '',
+                'userAddress2' => $request->userAddress2 ? $request->userAddress2 : '',
+                'userCity' => $request->userCity ? $request->userCity : '',
+                'userState' => $request->userState ? $request->userState : '',
+                'userPostal' => $request->userPostal ? $request->userPostal : '',
+                'userCountry' => $request->userCountry ? $request->userCountry : '',
+                'userCountry' => $request->userCountry ? $request->userCountry : ''
+            ]),
+            CURLOPT_HTTPHEADER => array(
+                'Content-Type: application/json'
+            )
+        ));
+        $response = curl_exec($curl);
+        curl_close($curl);
+        $rr = json_decode($response, true);
+        event(new Registered($user = $this->create($request->all())));
+        return redirect('/login');
+    }
     protected function create(array $data)
     {
+
         return User::create([
             'name' => !empty($data['name']) ? $data['name'] : '',
             'email' => !empty($data['email']) ? $data['email'] : '',
@@ -81,5 +117,6 @@ class RegisterController extends Controller
             'notes' => !empty( $data['notes'] ) ? $data['notes'] : '',
             'password' => Hash::make($data['password']),
         ]);
+
     }
 }
