@@ -24,8 +24,6 @@
                 <form class="kt-form col-md-8" style = "margin:auto;" method="POST" action="/password-reset">
                     @csrf
                     <div class="form-group">
-                    <input type = "hidden" name = "email" value = "{{ $email }}">
-                    <input type = "hidden" name = "token" value = "{{ $token }}">
                         <label >{{ __('Password') }}</label>
 
                         <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">

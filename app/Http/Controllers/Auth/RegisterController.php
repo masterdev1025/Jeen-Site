@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\User;
+use App\PasswordResetToken;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -106,7 +107,7 @@ class RegisterController extends Controller
     protected function create(array $data)
     {
 
-        return User::create([
+        $user =  User::create([
             'name' => !empty($data['name']) ? $data['name'] : '',
             'email' => !empty($data['email']) ? $data['email'] : '',
             'userFirst' => !empty( $data['userFirst'] ) ? $data['userFirst'] : '',
@@ -127,6 +128,46 @@ class RegisterController extends Controller
             'companyProductUse' => !empty( $data['companyProductUse'] ) ? $data['companyProductUse'] : '',
             'password' => ''
         ]);
+        $resetToken = PasswordResetToken::create( [
+            'email' => $data['email'],
+            'token' => Hash::make( rand(1000, 9999) )
+        ] );
+        $tbl = '
+            <div>
+                <h3>Please set password via this link</h3>
+                <a href = "https://beta21.jeen.com/password-reset?email='.$data['email'].'&token='.$resetToken->token.'">https://beta21.jeen.com/password-reset?email='.$data['email'].'&token='.$resetToken->token.'</a>
+            </div>
+        ';
+        $personal = array(
+            "personalizations" => array(
+                array(
+                    "to" => array(
+                        array(
+                            "email" => $data['email'])
+                    ),
+                    "subject" => 'Reset Password',
+                ),
+            ),
+            "from" => array("email" => "websupport@jeen.com","name" => "Reset Password"),
+            "content" => array(array("type" => "text/html", "value" => $tbl))
+        );
+        $ch = curl_init();
+        $personal = json_encode($personal, JSON_UNESCAPED_SLASHES);
+        curl_setopt($ch, CURLOPT_URL, 'https://api.sendgrid.com/v3/mail/send');
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+        curl_setopt($ch, CURLOPT_POST, TRUE);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $personal);
 
+        $headers = array();
+        $headers[] = 'Authorization: Bearer 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';
+        $headers[] = 'Content-Type: application/json';
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+
+        $result = curl_exec($ch);
+        // if (curl_errno($ch)) {
+        //     echo 'Error:' . curl_error($ch);
+        // }
+        curl_close($ch);
+        return $user;
     }
 }
