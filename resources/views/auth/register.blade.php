@@ -163,7 +163,7 @@
                                 @enderror
                             </div>
                         </div>
-                        <div class="row">
+                        <!-- <div class="row form-group">
                             <div class = "col-md-6">
                                 <label>Password</label>
                                 <div>
@@ -180,6 +180,34 @@
                                 <div>
                                     <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
                                 </div>
+                            </div>
+                        </div> -->
+                        <div class="form-row">
+                            <div class="col-md-6">
+                                <label>Customer Type</label>
+                                <input type = "hidden" name = "companyType">
+                                <div class="kt-checkbox">
+                                    @if($companyUse)
+                                        @foreach($companyUse as $c)
+                                        <label class="kt-checkbox kt-checkbox--success d-block mb-0">
+                                            <input type="checkbox" class = "filter_checkbox form_tag" data-type = "customer_type" data-id = "{{ $c->id }}"> {{ $c && $c->name ? $c->name : '' }}
+                                            <span></span>
+                                        </label>
+                                        @endforeach
+                                    @endif
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label>Company Product USE</label>
+                                <input type = "hidden" name = "companyProductUse">
+                                @if($companyUse)
+                                    @foreach($productUse as $c)
+                                    <label class="kt-checkbox kt-checkbox--success d-block mb-0">
+                                        <input type="checkbox" class = "filter_checkbox form_tag" data-type = "product_use" data-id = "{{ $c->id }}"> {{ $c && $c->name ? $c->name : '' }}
+                                        <span></span>
+                                    </label>
+                                    @endforeach
+                                @endif
                             </div>
                         </div>
                         <div class="form-row justify-content-center">
@@ -213,6 +241,21 @@
         var userFirst = $('input[name="userFirst"]').val();
         var userLast = $('input[name="userLast"]').val();
         $('input[name="name"]').val(`${userFirst} ${userLast}`);
+    })
+    function changeFormTagEvent(){
+        var customerTypeArray = [];
+        var productUseArray   = [];
+        $('.form_tag:checked').each(function(e){
+            if( $(this).data('type') == 'customer_type') customerTypeArray.push( $(this).data('id') );
+            else if( $(this).data('type') == 'product_use' ) productUseArray.push( $(this).data('id') );
+        })
+        $('input[name = "companyType"]').val( customerTypeArray.join(',') )
+        $('input[name = "companyProductUse"]').val( productUseArray.join(',') )
+        console.log( customerTypeArray )
+        console.log( productUseArray )
+    }
+    $(document).on('change', '.form_tag', function(){
+        changeFormTagEvent();
     })
 </script>
 @endsection

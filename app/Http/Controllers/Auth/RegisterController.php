@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Http\Request;
 use Illuminate\Auth\Events\Registered;
+use App\WebsiteFormTag;
 class RegisterController extends Controller
 {
     /*
@@ -23,7 +24,15 @@ class RegisterController extends Controller
     */
 
     use RegistersUsers;
-
+    public function showRegistrationForm()
+    {
+        $companyTags    = WebsiteFormTag::where([['tagType','=','customerType'],['active','=',1]])->orderBy('sortBy','ASC')->get();
+        $productUseTags = WebsiteFormTag::where([['tagType','=','productUse'],['active','=',1]])->orderBy('sortBy','ASC')->get();
+        return view('auth.register', [
+            'companyUse' => $companyTags,
+            'productUse' => $productUseTags
+        ]);
+    }
     /**
      * Where to redirect users after registration.
      *
@@ -50,8 +59,7 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users']
         ]);
     }
 
@@ -64,34 +72,34 @@ class RegisterController extends Controller
     public function register(Request $request)
     {
         $this->validator($request->all())->validate();
-        $curl = curl_init();
-        curl_setopt_array($curl, array(
-            CURLOPT_URL => "https://jeeninv.com/website/userdata",
-            CURLOPT_RETURNTRANSFER => true,
-            CURLINFO_HEADER_OUT => true,
-            CURLOPT_POST => true,
-            CURLOPT_POSTFIELDS => json_encode([
-                'name' => $request->name ? $request->name : '',
-                'email' => $request->email ? $request->email : '',
-                'userFirst' => $request->userFirst ? $request->userFirst : '',
-                'userLast' => $request->userLast ? $request->userLast : '',
-                'userPhone' => $request->userPhone ? $request->userPhone : '',
-                'userPosition' => $request->userPosition ? $request->userPosition : '',
-                'userAddress1' => $request->userAddress1 ? $request->userAddress1 : '',
-                'userAddress2' => $request->userAddress2 ? $request->userAddress2 : '',
-                'userCity' => $request->userCity ? $request->userCity : '',
-                'userState' => $request->userState ? $request->userState : '',
-                'userPostal' => $request->userPostal ? $request->userPostal : '',
-                'userCountry' => $request->userCountry ? $request->userCountry : '',
-                'userCountry' => $request->userCountry ? $request->userCountry : ''
-            ]),
-            CURLOPT_HTTPHEADER => array(
-                'Content-Type: application/json'
-            )
-        ));
-        $response = curl_exec($curl);
-        curl_close($curl);
-        $rr = json_decode($response, true);
+        // $curl = curl_init();
+        // curl_setopt_array($curl, array(
+        //     CURLOPT_URL => "https://jeeninv.com/website/userdata",
+        //     CURLOPT_RETURNTRANSFER => true,
+        //     CURLINFO_HEADER_OUT => true,
+        //     CURLOPT_POST => true,
+        //     CURLOPT_POSTFIELDS => json_encode([
+        //         'name' => $request->name ? $request->name : '',
+        //         'email' => $request->email ? $request->email : '',
+        //         'userFirst' => $request->userFirst ? $request->userFirst : '',
+        //         'userLast' => $request->userLast ? $request->userLast : '',
+        //         'userPhone' => $request->userPhone ? $request->userPhone : '',
+        //         'userPosition' => $request->userPosition ? $request->userPosition : '',
+        //         'userAddress1' => $request->userAddress1 ? $request->userAddress1 : '',
+        //         'userAddress2' => $request->userAddress2 ? $request->userAddress2 : '',
+        //         'userCity' => $request->userCity ? $request->userCity : '',
+        //         'userState' => $request->userState ? $request->userState : '',
+        //         'userPostal' => $request->userPostal ? $request->userPostal : '',
+        //         'userCountry' => $request->userCountry ? $request->userCountry : '',
+        //         'userCountry' => $request->userCountry ? $request->userCountry : ''
+        //     ]),
+        //     CURLOPT_HTTPHEADER => array(
+        //         'Content-Type: application/json'
+        //     )
+        // ));
+        // $response = curl_exec($curl);
+        // curl_close($curl);
+        // $rr = json_decode($response, true);
         event(new Registered($user = $this->create($request->all())));
         return redirect('/login');
     }
@@ -115,7 +123,9 @@ class RegisterController extends Controller
             'approvalDate' => '',
             'userStatus'   => 0,
             'notes' => !empty( $data['notes'] ) ? $data['notes'] : '',
-            'password' => Hash::make($data['password']),
+            'companyType' => !empty( $data['companyType'] ) ? $data['companyType'] : '',
+            'companyProductUse' => !empty( $data['companyProductUse'] ) ? $data['companyProductUse'] : '',
+            'password' => ''
         ]);
 
     }

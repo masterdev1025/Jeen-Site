@@ -33,7 +33,9 @@ class User extends Authenticatable
         'registerCurrentCustomer',
         'approvalDate',
         'userStatus',
-        'notes'
+        'notes',
+        'companyType',
+        'companyProductUse'
     ];
 
     /**
