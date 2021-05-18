@@ -25,6 +25,54 @@ class RegisterController extends Controller
     */
 
     use RegistersUsers;
+
+    public function approve(Request $request){
+        $email = $request->email;
+        User::where([['email','=',$email]])->update(['status' => 1]);
+        $resetToken = PasswordResetToken::create( [
+            'email' => $data['email'],
+            'token' => Hash::make( rand(1000, 9999) )
+        ] );
+        $tbl = '
+            <div>
+                <h3>Please set password via this link</h3>
+                <a href = "https://beta21.jeen.com/password-reset?email='.$data['email'].'&token='.$resetToken->token.'">https://beta21.jeen.com/password-reset?email='.$data['email'].'&token='.$resetToken->token.'</a>
+            </div>
+        ';
+        $personal = array(
+            "personalizations" => array(
+                array(
+                    "to" => array(
+                        array(
+                            "email" => $email)
+                    ),
+                    "subject" => 'Reset Password',
+                ),
+            ),
+            "from" => array("email" => "websupport@jeen.com","name" => "Reset Password"),
+            "content" => array(array("type" => "text/html", "value" => $tbl))
+        );
+        $ch = curl_init();
+        $personal = json_encode($personal, JSON_UNESCAPED_SLASHES);
+        curl_setopt($ch, CURLOPT_URL, 'https://api.sendgrid.com/v3/mail/send');
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+        curl_setopt($ch, CURLOPT_POST, TRUE);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $personal);
+
+        $headers = array();
+        $headers[] = 'Authorization: Bearer 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';
+        $headers[] = 'Content-Type: application/json';
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+
+        $result = curl_exec($ch);
+        // if (curl_errno($ch)) {
+        //     echo 'Error:' . curl_error($ch);
+        // }
+        curl_close($ch);
+        return response()->json([
+            'error' => 0 , 'message' => 'Success'
+        ]);
+    }
     public function showRegistrationForm()
     {
         $companyTags    = WebsiteFormTag::where([['tagType','=','customerType'],['active','=',1]])->orderBy('sortBy','ASC')->get();
@@ -73,34 +121,34 @@ class RegisterController extends Controller
     public function register(Request $request)
     {
         $this->validator($request->all())->validate();
-        // $curl = curl_init();
-        // curl_setopt_array($curl, array(
-        //     CURLOPT_URL => "https://jeeninv.com/website/userdata",
-        //     CURLOPT_RETURNTRANSFER => true,
-        //     CURLINFO_HEADER_OUT => true,
-        //     CURLOPT_POST => true,
-        //     CURLOPT_POSTFIELDS => json_encode([
-        //         'name' => $request->name ? $request->name : '',
-        //         'email' => $request->email ? $request->email : '',
-        //         'userFirst' => $request->userFirst ? $request->userFirst : '',
-        //         'userLast' => $request->userLast ? $request->userLast : '',
-        //         'userPhone' => $request->userPhone ? $request->userPhone : '',
-        //         'userPosition' => $request->userPosition ? $request->userPosition : '',
-        //         'userAddress1' => $request->userAddress1 ? $request->userAddress1 : '',
-        //         'userAddress2' => $request->userAddress2 ? $request->userAddress2 : '',
-        //         'userCity' => $request->userCity ? $request->userCity : '',
-        //         'userState' => $request->userState ? $request->userState : '',
-        //         'userPostal' => $request->userPostal ? $request->userPostal : '',
-        //         'userCountry' => $request->userCountry ? $request->userCountry : '',
-        //         'userCountry' => $request->userCountry ? $request->userCountry : ''
-        //     ]),
-        //     CURLOPT_HTTPHEADER => array(
-        //         'Content-Type: application/json'
-        //     )
-        // ));
-        // $response = curl_exec($curl);
-        // curl_close($curl);
-        // $rr = json_decode($response, true);
+        $curl = curl_init();
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => "https://jeeninv.com/website/userdata",
+            CURLOPT_RETURNTRANSFER => true,
+            CURLINFO_HEADER_OUT => true,
+            CURLOPT_POST => true,
+            CURLOPT_POSTFIELDS => json_encode([
+                'name' => $request->name ? $request->name : '',
+                'email' => $request->email ? $request->email : '',
+                'userFirst' => $request->userFirst ? $request->userFirst : '',
+                'userLast' => $request->userLast ? $request->userLast : '',
+                'userPhone' => $request->userPhone ? $request->userPhone : '',
+                'userPosition' => $request->userPosition ? $request->userPosition : '',
+                'userAddress1' => $request->userAddress1 ? $request->userAddress1 : '',
+                'userAddress2' => $request->userAddress2 ? $request->userAddress2 : '',
+                'userCity' => $request->userCity ? $request->userCity : '',
+                'userState' => $request->userState ? $request->userState : '',
+                'userPostal' => $request->userPostal ? $request->userPostal : '',
+                'userCountry' => $request->userCountry ? $request->userCountry : '',
+                'userCountry' => $request->userCountry ? $request->userCountry : ''
+            ]),
+            CURLOPT_HTTPHEADER => array(
+                'Content-Type: application/json'
+            )
+        ));
+        $response = curl_exec($curl);
+        curl_close($curl);
+        $rr = json_decode($response, true);
         event(new Registered($user = $this->create($request->all())));
         return redirect('/login');
     }
@@ -128,46 +176,7 @@ class RegisterController extends Controller
             'companyProductUse' => !empty( $data['companyProductUse'] ) ? $data['companyProductUse'] : '',
             'password' => ''
         ]);
-        $resetToken = PasswordResetToken::create( [
-            'email' => $data['email'],
-            'token' => Hash::make( rand(1000, 9999) )
-        ] );
-        $tbl = '
-            <div>
-                <h3>Please set password via this link</h3>
-                <a href = "https://beta21.jeen.com/password-reset?email='.$data['email'].'&token='.$resetToken->token.'">https://beta21.jeen.com/password-reset?email='.$data['email'].'&token='.$resetToken->token.'</a>
-            </div>
-        ';
-        $personal = array(
-            "personalizations" => array(
-                array(
-                    "to" => array(
-                        array(
-                            "email" => $data['email'])
-                    ),
-                    "subject" => 'Reset Password',
-                ),
-            ),
-            "from" => array("email" => "websupport@jeen.com","name" => "Reset Password"),
-            "content" => array(array("type" => "text/html", "value" => $tbl))
-        );
-        $ch = curl_init();
-        $personal = json_encode($personal, JSON_UNESCAPED_SLASHES);
-        curl_setopt($ch, CURLOPT_URL, 'https://api.sendgrid.com/v3/mail/send');
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-        curl_setopt($ch, CURLOPT_POST, TRUE);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $personal);
 
-        $headers = array();
-        $headers[] = 'Authorization: Bearer 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';
-        $headers[] = 'Content-Type: application/json';
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-
-        $result = curl_exec($ch);
-        // if (curl_errno($ch)) {
-        //     echo 'Error:' . curl_error($ch);
-        // }
-        curl_close($ch);
         return $user;
     }
 }
