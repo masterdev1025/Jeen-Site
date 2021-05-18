@@ -28,15 +28,15 @@ class RegisterController extends Controller
 
     public function approve(Request $request){
         $email = $request->email;
-        User::where([['email','=',$email]])->update(['status' => 1]);
+        User::where([['email','=',$email]])->update(['userStatus' => 1]);
         $resetToken = PasswordResetToken::create( [
-            'email' => $data['email'],
+            'email' => $email,
             'token' => Hash::make( rand(1000, 9999) )
         ] );
         $tbl = '
             <div>
                 <h3>Please set password via this link</h3>
-                <a href = "https://beta21.jeen.com/password-reset?email='.$data['email'].'&token='.$resetToken->token.'">https://beta21.jeen.com/password-reset?email='.$data['email'].'&token='.$resetToken->token.'</a>
+                <a href = "https://beta21.jeen.com/password-reset?email='.$email.'&token='.$resetToken->token.'">https://beta21.jeen.com/password-reset?email='.$email.'&token='.$resetToken->token.'</a>
             </div>
         ';
         $personal = array(
