@@ -125,8 +125,8 @@
                         </td>
                         <td class='prodInci pb-1 pt-2'>{{$item->productInci}}</td>
                         <td>
-                            @if($item->pdfSds == 1)
-                            <button class = "btn btn-dark btn-sm"><i class = "fa fa-file-pdf"></i></button>
+                            @if($item->pdfSds == 1 &&  $item->product_id)
+                            <button class = "btn btn-dark btn-sm view-pdf--btn" data-type = "sds" data-id = "{{ $item->product_id }}"><i class = "fa fa-file-pdf"></i></button>
                             @endif
                         </td>
                         <td>
@@ -330,6 +330,50 @@
                 }
             })
         });
+        $(document).on('click', '.view-pdf--btn', function(){
+            var type = $(this).data('type');
+            var id   = $(this).data('id');
+            var loadingSwal = swal.fire({
+                title: 'Please wait...',
+                text: "",
+                onOpen: () => {
+                swal.showLoading();
+                },
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                allowEnterKey: false
+            })
+            $.ajax({
+                type: 'get',
+                url: '/portal/pdf',
+                data: {
+                    "_token": "{{ csrf_token() }}",
+                    "type" :  type,
+                    "id" : id,
+                    "companyId" : 1
+                },
+                success: function (res) {
+                    swal.close();
+                    if(res && res.error == 0 && res.pdf)
+                    {
+                        var popw = 1200;
+                        var poph = 650;
+                        var left = (screen.width - popw) / 2,
+                        top = (screen.height - poph) / 3,  // for 25% - devide by 4  |  for 33% - devide by 3
+                        targetWin = window.open('', "title", 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=no, copyhistory=no, width=' + popw + ', height=' + poph + ', top=' + top + ', left=' + left);
+                        targetWin.document.write(
+                            "<iframe width = '100%' height = '100%' frameborder='0' src='data:application/pdf;base64, " +
+                            encodeURI(res.pdf) + "'></iframe>"
+                        )
+                    }
+                },
+                error: function(err){
+                    swal.close();
+
+                }
+            })
+
+        })
     })
 
 </script>

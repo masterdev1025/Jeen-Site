@@ -31,3 +31,5 @@ Route::post('/user/approve',   'Auth\RegisterController@approve');
 
 Route::get('/portal/dashboard',  'DashboardController@index')->middleware('auth');
 Route::get('/portal/products',   'ProductController@authIndex')->middleware('auth');
+
+Route::get('/portal/pdf',        'PdfController@getPdf')->middleware('auth');

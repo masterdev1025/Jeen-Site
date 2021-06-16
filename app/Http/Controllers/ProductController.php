@@ -18,6 +18,7 @@ class ProductController extends Controller
                                  `wp`.`pdfSds`,
                                  `wp`.`pdfSpecs`,
                                  `wp`.`pdfTds`,
+                                 `product_id`,
                                  `wp`.`image_url` AS `img`,
                                  `wp`.`url_alias` AS `urlAlias`,
                                  `wp`.`primary_category_id` AS `categoryId`,
