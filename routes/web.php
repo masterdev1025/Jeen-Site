@@ -26,3 +26,7 @@ Route::get('/password-reset', 'Auth\PasswordResetController@index');
 Route::post('/password-reset', 'Auth\PasswordResetController@passwordReset');
 
 Route::post('/user/approve',   'Auth\RegisterController@approve');
+
+
+
+Route::get('/portal/dashboard',  'DashboardController@index')->middleware('auth');

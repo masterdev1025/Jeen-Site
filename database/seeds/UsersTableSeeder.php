@@ -30,7 +30,9 @@ class UsersTableSeeder extends Seeder
             'registerDate'  => date('Y-m-d H:i:s'),
             'approvalDate'  => date('Y-m-d H:i:s'),
             'userStatus'    => 1,
-            'notes'  => ''
+            'notes'  => '',
+            'companyType' => '',
+            'companyProductUse' => ''
         ]);
         User::create([
             'name' => 'Christian Rowe',
@@ -49,7 +51,9 @@ class UsersTableSeeder extends Seeder
             'registerDate'  => date('Y-m-d H:i:s'),
             'approvalDate'  => date('Y-m-d H:i:s'),
             'userStatus'    => 1,
-            'notes'  => ''
+            'notes'  => '',
+            'companyType' => '',
+            'companyProductUse' => ''
         ]);
     }
 }
