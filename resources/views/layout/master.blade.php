@@ -81,9 +81,12 @@
             <div class="navbar-collapse collapse justify-content-center order-2" id="collapsingNavbar">
                 <ul class="navbar-nav subNavUl">
                     <li class="nav-item">
+                        <a class="nav-link subNav" href="/portal/dashboard">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link subNav" href="#">Orders</a>
                     </li>
-                    <li class="nav-item active" style="
+                    <li class="nav-item" style="
                         ">
                         <a class="nav-link nav-link subNav" href="#" style="">Saved Products<span class="sr-only">Saved Products</span></a>
                     </li>
@@ -95,10 +98,6 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link nav-link subNav" href="#">Quote Cart
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link nav-link subNav" href="#">My Account
                         </a>
                     </li>
                 </ul>

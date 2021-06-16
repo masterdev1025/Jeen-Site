@@ -92,7 +92,7 @@
                             </div>
                             <div class="header-column ">
                                 <div class="header-row justify-content-end">
-                                    <div class="header-nav header-nav-stripe header-nav-divisor header-nav-force-light-text justify-content-end" data-sticky-header-style="{'minResolution': 991}" data-sticky-header-style-active="{'margin-left': '230px'}" data-sticky-header-style-deactive="{'margin-left': '0'}" style="margin-left: 0px;">
+                                    <div class="header-nav header-nav-stripe header-nav-divisor header-nav-force-light-text justify-content-end" data-sticky-header-style="{'minResolution': 991}"  data-sticky-header-style-deactive="{'margin-left': '0'}" style="margin-left: 0px;">
                                         <div class="header-nav-main header-nav-main-square header-nav-main-effect-1 header-nav-main-sub-effect-1">
                                             <nav class="collapse show" style="">
                                             <ul class="nav nav-pills" id="mainNav">

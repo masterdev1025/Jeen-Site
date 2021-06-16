@@ -15,6 +15,9 @@ class ProductController extends Controller
                                  `wp`.`product_inci` AS `productInci`,
                                  `wp`.`product_type` AS `productType`,
                                  `wp`.`product_state` AS `productState`,
+                                 `wp`.`pdfSds`,
+                                 `wp`.`pdfSpecs`,
+                                 `wp`.`pdfTds`,
                                  `wp`.`image_url` AS `img`,
                                  `wp`.`url_alias` AS `urlAlias`,
                                  `wp`.`primary_category_id` AS `categoryId`,
@@ -44,6 +47,14 @@ class ProductController extends Controller
     public function index(){
         $data  = $this->getProductData();
         return view('pages.Products.main.index',[
+            'data' => $data,
+            'category' => null
+        ]);
+    }
+
+    public function authIndex(){
+        $data  = $this->getProductData();
+        return view('pages.Products.underAuth.main.index',[
             'data' => $data,
             'category' => null
         ]);

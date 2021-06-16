@@ -25,7 +25,10 @@ class WebsiteProduct extends Model
         'product_status',
         'primary_category_id',
         'active',
-        'private'
+        'private',
+        'pdfSds',
+        'pdfSpecs',
+        'pdfTds'
     ];
     public function primaryCategory(){
         return $this->belongsTo('App\WebsiteProductCategory'. 'primary_category_id');
