@@ -14,8 +14,7 @@ class PdfController extends Controller
         if( $type == 'sds' )
         {
             $url = 'website-files/'.$companyId.'/products/documents/sds/SDS-'.$id.'.pdf';
-            $b64Doc = chunk_split(base64_encode(file_get_contents(public_path( $url ))));
-            return response()->json(['error'=>0, 'pdf'=>$b64Doc]);
+            return response()->file( public_path( $url ) );
         } else {
             return response()->json(['error' =>0, 'pdf' => null]);
         }

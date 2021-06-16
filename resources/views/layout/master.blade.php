@@ -61,6 +61,14 @@
             .subNav {
                 padding: 8px 35px !important;
                 white-space: nowrap;
+                color: rgba(255,255,255,1) !important;
+                font-weight: bold;
+            }
+            .subNav:hover {
+                border-bottom: #fff solid 3px;
+            }
+            .curPage {
+                border-bottom: #fff solid 3px;
             }
         </style>
     </head>
