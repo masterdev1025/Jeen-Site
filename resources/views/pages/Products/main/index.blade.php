@@ -126,7 +126,7 @@
                         <td class='pt-1 pb-1' data-search=''>{{$item->productState}}</td>
                         <td class='pt-1 pb-1' data-search='{{$item->productType}} sds msds' style = "display:flex;justify-content:center; align-items:center;">
                             @if($item->categoryAlias)
-                            <a class = "btn btn-outline-success btn-sm" href = "/products/{{ $item->categoryAlias }}/{{ $item->urlAlias }}"><i class = "fa fa-eye"></i> View</a>
+                            <!-- <a class = "btn btn-outline-success btn-sm" href = "/products/{{ $item->categoryAlias }}/{{ $item->urlAlias }}"><i class = "fa fa-eye"></i> View</a> -->
                             @endif
                             <button class = "btn btn-outline-success btn-sm btn-prod" data-prod = "{{ $item->productName }}">Request Information</button>
                         </td>
@@ -211,7 +211,9 @@
                 title: prodName,
                 text: "The data will input",
                 html:'<div class="swText mb-4"> To get more information about this product or access product documents, ' +
-                    'please fill out the form below. </div>'+
+                    'please fill out the form below.' +
+                    '<br><br><a class="font-weight-bold" href="/login">Login</a> to the customer portal to get instant access or fill out the quick form below to get more information about this product. ' +
+                    '</div>'+
                     '<form id="swForm">'+
                     '<label class="swLabel" for="swName">Name (Required)</label>'+
                     '<input id="swName" name="swName" class="swal2-input mt-0" required>' +
