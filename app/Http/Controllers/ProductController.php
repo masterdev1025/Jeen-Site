@@ -88,4 +88,12 @@ class ProductController extends Controller
             'product' => $product
         ]);
     }
+
+    public function formulary(Request $request){
+        $data  = $this->getProductData();
+        return view('pages.Formulary.index',[
+            'data' => $data,
+            'category' => null
+        ]);
+    }
 }

@@ -14,7 +14,7 @@
 Auth::routes();
 Route::get('/', 'HomeMainController@index');
 Route::get('/about', 'HomeMainController@aboutUs');
-Route::get('/formulary', 'HomeMainController@formulary');
+
 Route::get('/brochures', 'HomeMainController@brochures');
 Route::get('/contact', 'HomeMainController@contact');
 
@@ -31,5 +31,5 @@ Route::post('/user/approve',   'Auth\RegisterController@approve');
 
 Route::get('/portal/dashboard',  'DashboardController@index')->middleware('auth');
 Route::get('/portal/products',   'ProductController@authIndex')->middleware('auth');
-
+Route::get('/formulary',         'ProductController@formulary')->middleware('auth');
 Route::get('/portal/pdf',        'PdfController@getPdf')->middleware('auth');
