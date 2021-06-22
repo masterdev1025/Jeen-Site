@@ -21,7 +21,7 @@ Route::get('/contact', 'HomeMainController@contact');
 Route::get('/products', 'ProductController@index');
 Route::get('/products/{category}',  'ProductController@indexByCategory');
 Route::get('/products/{category}/{alias}',  'ProductController@indexByCategoryAlias');
-
+Route::post('/products/request',            'ProductController@requestProducts');
 Route::get('/password-reset', 'Auth\PasswordResetController@index');
 Route::post('/password-reset', 'Auth\PasswordResetController@passwordReset');
 

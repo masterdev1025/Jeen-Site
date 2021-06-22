@@ -124,10 +124,11 @@
                         </td>
                         <td class='prodInci pb-1 pt-2'>{{$item->productInci}}</td>
                         <td class='pt-1 pb-1' data-search=''>{{$item->productState}}</td>
-                        <td class='pt-1 pb-1' data-search='{{$item->productType}} sds msds'>
+                        <td class='pt-1 pb-1' data-search='{{$item->productType}} sds msds' style = "display:flex;justify-content:center; align-items:center;">
                             @if($item->categoryAlias)
-                            <a class = "btn btn-outline-success btn-sm" href = "/products/{{ $item->categoryAlias }}/{{ $item->urlAlias }}">View Product</a>
+                            <a class = "btn btn-outline-success btn-sm" href = "/products/{{ $item->categoryAlias }}/{{ $item->urlAlias }}"><i class = "fa fa-eye"></i> View</a>
                             @endif
+                            <button class = "btn btn-outline-success btn-sm btn-prod" data-prod = "{{ $item->productName }}">Request Information</button>
                         </td>
                     </tr>
                     @endforeach
@@ -172,9 +173,7 @@
             ]
         });
         $('#prodTable_filter label input[type=search]').on('keyup', function() {
-            console.log($('#prodTable_filter label input[type=search]').val());
             var numItems = $('.jplist-selected').length;
-            console.log('num: '+numItems);
             if(numItems > 0){
                 $(".btn-cat").removeClass("jplist-selected");
                 table.search('').columns().search('').draw();
@@ -187,9 +186,7 @@
             $('#prodTable_filter label input[type=search]').val('');
             var ss = $(this).attr("data-text");
             var searchCol = 3;
-            console.log($(this).attr("data-sType"));
             if($(this).attr("data-sType") == 'jee'){
-                console.log('search col1');
                 searchCol = 0;
             } else {
                 searchCol = 3;
@@ -208,7 +205,7 @@
             var uIp = "{{ Request::getClientIp() }}";
             var uLink = "{{ url()->full() }}";
             //calendar.refetchEvents();
-            var pid = $(this).attr("data-prodid");
+            // var pid = $(this).attr("data-prodid");
             var prodName = $(this).attr("data-prod");
             Swal.fire({
                 title: prodName,
@@ -281,9 +278,10 @@
                     } else {
                         subReady =1;
                         $.ajax({
-                            url: 'php/productRequest.php',
+                            url: '/products/request',
                             type: "post",
                             data: {
+                                _token: "{{ csrf_token() }}",
                                 swProduct: $( "#swProduct" ).val(),
                                 swName: $( "#swName" ).val(),
                                 swCompany: $( "#swCompany" ).val(),

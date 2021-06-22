@@ -96,4 +96,9 @@ class ProductController extends Controller
             'category' => null
         ]);
     }
+
+    public function requestProducts(Request $request)
+    {
+
+    }
 }
