@@ -221,6 +221,13 @@
                     '<input id="swEmail" name="swEmail" class="swal2-input mt-0" required>' +
                     '<label class="swLabel">Phone (Required)</label>'+
                     '<input id="swPhone" name="swPhone" value="" class="swal2-input mt-0">' +
+                    '<div class="row mb-2"><div class="col-6">'+
+                    '<label class="swLabel">Country</label>'+
+                    '<select class="swal2-select m-0 form-control" id="country" name="country" required></select>' +
+                    '</div><div class="col-6">' +
+                    '<label class="swLabel">State</label>'+
+                    '<select class="swal2-select m-0 form-control" id="state" name="state" required></select>' +
+                    '</div></div>' +
                     '<label class="swLabel">Message (Required)</label>'+
                     '<textarea aria-label="Type your message here" class="swal2-textarea mt-0" placeholder="Type your message here..." id="swMsg" name="swMsg" style="display: flex;"></textarea>' +
                     '<div id="g2"></div>' +
@@ -235,6 +242,8 @@
                 confirmButtonText: 'Submit',
                 cancelButtonText: 'Cancel',
                 onOpen: function () {
+                    populateCountries("country", "state");
+                    $("#country").val("USA").change();
                     grecaptcha.render('g2', {
                         'sitekey': '6LeGWp8aAAAAAK8jJ7DR10YKzQe2F2yFk5buDbxs'
                     })
@@ -288,6 +297,8 @@
                                 swPhone: $( "#swPhone" ).val(),
                                 swEmail: $( "#swEmail" ).val(),
                                 swMsg: $( "#swMsg" ).val(),
+                                swCountry: $( "#country" ).val(),
+                                swState: $( "#state" ).val(),
                                 swIp: uIp,
                                 swLink: uLink,
                                 'g-recaptcha-response':grecaptcha.getResponse()
@@ -321,4 +332,5 @@
     })
 
 </script>
+<script src="{{ asset('js/country-state-select.js') }}"></script>
 @endsection
