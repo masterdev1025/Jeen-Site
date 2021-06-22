@@ -150,7 +150,13 @@ class RegisterController extends Controller
         curl_close($curl);
         $rr = json_decode($response, true);
         event(new Registered($user = $this->create($request->all())));
-        return redirect('/login');
+        return redirect('/register')->with(['html' => '
+        <div class="card mb-5 mt-4">
+        <div class="card-body">
+        <p class="lead mb-5 mt-4 text-center text-primary font-weight-bold">Thank you for registering!
+        </p><p class="lead mb-5 mt-4 text-center text-dark ">Your information has been submitted for verification.<br>Most applications are reviewed within 24 hours.<br><br>For immediate assistance please call (973) 439-1401
+        </p></div></div>
+        ']);
     }
     protected function create(array $data)
     {
